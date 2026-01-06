@@ -1,0 +1,13 @@
+.DS_Store
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+.hidden/
+.idea/
+section_saved/*
+completed_code/to_share/*
+to_share/*
+my_work/*
+!my_work/.keep
