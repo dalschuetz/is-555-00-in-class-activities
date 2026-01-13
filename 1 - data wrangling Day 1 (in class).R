@@ -6,7 +6,8 @@ library(tidyverse)
 df <- starwars
 
 # glimpse turns a data frame on its side for viewing. Super useful.
-
+df |> glimpse()
+df
 
 
 # iteratively add operations with the pipe operator: 
@@ -16,15 +17,29 @@ df <- starwars
 # arrange by mass
 # note: columns can contain lists; more on that later
 # note: filtering on some logical excludes NAs
+df_filtered <- df |> 
+  filter(height > 100, 
+         sex == 'female') |>
+  select(name, height, mass, species, films) |>
+  filter(mass > 50) 
 
 
 # calculate a new column,weight_lbs = mass * 2.204623
 # Make sure it gets saved to the tibble...
+df_lbs <- df |> 
+  mutate(weight_lbs = mass * 2.204623) |>
+  glimpse()
+
 
 
 
 # group and summarize. Pay attention to NAs
 # get a count and mean mass by species
+grouped_df <- df |>
+  group_by(species) |>
+  summarize(count = n(),
+            mean_mass = mean(mass)) |>
+  glimpse()
 
 
 # Lots of NAs for average... why? Even for large groups it's NA...
