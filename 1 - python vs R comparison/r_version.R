@@ -33,7 +33,7 @@ df <- df %>%
 
 
 df_new <- df %>%
-  mutate(gender = ifelse(gender == 'male', 1, 0))
+  mutate(gender = if_else(gender == 'male', 1, 0))
 # OR:
 df_new <- df %>%
   mutate(gender = recode(gender,
