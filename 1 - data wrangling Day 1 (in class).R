@@ -9,6 +9,8 @@ df <- starwars
 df |> glimpse()
 df
 
+df |> as.data.frame()
+
 
 # iteratively add operations with the pipe operator: 
 # height > 100, sex == female, 
@@ -17,30 +19,29 @@ df
 # arrange by mass
 # note: columns can contain lists; more on that later
 # note: filtering on some logical excludes NAs
-df_filtered <- df |> 
-  filter(height > 100, 
-         sex == 'female') |>
-  select(name, height, mass, species, films) |>
-  filter(mass > 50) 
+df |> 
+  filter(height > 100,
+         sex == 'female') |> 
+  select(name, height, mass, species, films) |> 
+  filter(mass > 50) -> df_filtered
+
+
 
 
 # calculate a new column,weight_lbs = mass * 2.204623
 # Make sure it gets saved to the tibble...
-df_lbs <- df |> 
-  mutate(weight_lbs = mass * 2.204623) |>
+df_lbs<- df |> 
+  mutate(weight_lbs = mass * 2.204623) |> 
+  mutate()
   glimpse()
-
-
 
 
 # group and summarize. Pay attention to NAs
 # get a count and mean mass by species
-grouped_df <- df |>
-  group_by(species) |>
+df |> 
+  group_by(species) |> 
   summarize(count = n(),
-            mean_mass = mean(mass)) |>
-  glimpse()
-
+            mean_mass = mean(mass))
 
 # Lots of NAs for average... why? Even for large groups it's NA...
 
