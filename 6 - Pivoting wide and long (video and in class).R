@@ -69,21 +69,49 @@ drinks <- tribble(
   'USA',      249,     58,    84
 )
 
-drinks
+drinks2 <- tribble(
+  ~country, ~population,  ~soda, ~tea,  ~sparkling_water,
+  'China',   196354124357,  79,    192,     8,
+  'Italy',   28524,  85,     42,   237,
+  'USA',     36451321, 249,     58,    84
+)
+
+drinks3 <- tribble(
+  ~country, ~population,  ~soda, ~tea,  ~sparkling_water, ~cat_count, ~dog_count,
+  'China',   1354124357,  79,    192,     8, 3456, 3,
+  'Italy',   28524,  85,     42,   237, 20, 123,
+  'USA',     36451321, 249,     58,    84, 5, 64548
+)
 
 
 
 # Let's make it more tidy. pivot_longer
-drinks %>% 
+drinks_longer <- drinks %>% 
   pivot_longer(
     cols = c(soda, tea, sparkling_water),
     names_to = 'drink_type',
     values_to = 'liters_per_capita'
   ) 
 
+drinks2 %>% 
+  pivot_longer(
+    cols = c(soda, tea, sparkling_water),
+    names_to = 'drink_type',
+    values_to = 'liters_per_capita'
+  ) 
 
+drinks3 %>% 
+  pivot_longer(
+    cols = c(soda, tea, sparkling_water),
+    names_to = 'drink_type',
+    values_to = 'liters_per_capita'
+  ) 
 
-
+drinks_wider <- drinks_longer |>
+  pivot_wider(
+    names_from = drink_type,
+    values_from = liters_per_capita
+    )
 
 # New data:
 gap <- read_csv('https://www.dropbox.com/s/dv1a1ldkuyoftn2/gap_smaller.csv?dl=1')
@@ -168,9 +196,17 @@ bob %>%
   glimpse
 
 # which objects occur most frequently?
+long_bob <- bob |>
+  pivot_longer(
+    cols = apple_frame:wood_framed,
+    names_to = 'feature',
+    values_to = 'is_in_frame'
+  )
 
-
-
+long_bob_most_frequent <- long_bob |>
+  group_by(feature) |>
+  summarize(count = sum(is_in_frame)) |>
+  arrange(desc(count))
 # What was the season when Bob painted the most mountains?
 
 
