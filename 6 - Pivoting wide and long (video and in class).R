@@ -198,29 +198,64 @@ bob %>%
 # which objects occur most frequently?
 long_bob <- bob |>
   pivot_longer(
-    cols = apple_frame:wood_framed,
+    cols = apple_frame:last_col(),
     names_to = 'feature',
     values_to = 'is_in_frame'
   )
 
-long_bob_most_frequent <- long_bob |>
+long_bob_most_frequent_what_missing <- long_bob |>
+  group_by(feature) |>
+  summarize(count = sum(is_in_frame)) |>
+  arrange((count))
+
+long_bob_clean <- long_bob |>
+  filter(is_in_frame == 1)
+
+long_bob_most_frequent <- long_bob_clean |>
   group_by(feature) |>
   summarize(count = sum(is_in_frame)) |>
   arrange(desc(count))
-# What was the season when Bob painted the most mountains?
 
+long_bob_episode_variety <- long_bob_clean |>
+  group_by(episode) |>
+  summarize(unique_count = n_distinct()) |>
+  arrange(descJ(count_of_instance))
+
+long_bob_wide <- long_bob_clean |>
+  pivot_wider(
+    names_from = feature,
+    values_from = is_in_frame,
+    values_fill = 0
+  )
+
+# What was the season when Bob painted the most mountains?
 
 
 #  How do the episodes compare in terms of the variety of objects included?
 
 
 # Has the variety of objects changed over the 30 seasons?
+long_bob_season_variety <- long_bob_clean |>
+  group_by(season, episode_num) |>
+  summarize(distinct_feature_count = n()) |>
+  group_by(season) |>
+  summarize(mean_diversity = mean(distinct_feature_count)) |>
+  print(n = 31)
 
 
 # Create a table that displays one line per attribute with a count of times that 
 # object was used in each season (one column per season)
 
-
+bob_object_used <- long_bob_clean |>
+  group_by(season, feature) |>
+  summarize(feature_count = n()) |>
+  pivot_wider(
+    names_from = season,
+    names_prefix = 'season_',
+    values_from = feature_count,
+    values_fill = 0,
+    
+  )
 
 
 
