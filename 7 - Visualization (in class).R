@@ -67,13 +67,41 @@ penguins %>%
 
 # histogram with body_mass_g
 # add species as fill color, pay attention to position
+penguins |>
+  ggplot(mapping = aes(x = body_mass_g, fill = species)) +
+  geom_histogram(binwidth = 120)
 
-
-
+install.packages("ggthemes")
 # density curves are sometimes nicer. Let's do the above but with 
 # a density curve. Alpha is nice here.
+penguins |>
+  ggplot(mapping = aes(x = body_mass_g, fill = species)) +
+  geom_density(alpha = .4) +
+  ggthemes::theme_economist() +
+  labs(
+    title = 'Density by Species',
+    x = 'Body Mass (g)',
+    y = 'Population Density',
+    fill = 'Species Name:'
+  )
 
+penguins |>
+  ggplot(mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species, fill = species)) +
+  geom_point(size = 3, alpha = .4) 
 
+penguins |>
+  ggplot(mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species, fill = species, alpha = bill_length_mm)) +
+  geom_point(size = 3) 
+
+penguins |>
+  ggplot(mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = bill_length_mm)) +
+  geom_point(size = 3) 
+
+# stacking geometries
+penguins |>
+  ggplot(mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point(size = 3) +
+  geom_smooth(method = 'lm')
 
 # bar charts with categoricals: quick, easy counts summary
 # stacked vs. side-by-side
