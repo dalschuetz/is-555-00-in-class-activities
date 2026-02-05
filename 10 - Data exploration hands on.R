@@ -30,7 +30,13 @@ lm(y ~ x, data = df2) %>% coefficients()
 lm(y ~ x, data = df3) %>% coefficients()
 lm(y ~ x, data = df4) %>% coefficients()
 
-#visualizations 
+#visualizations
+bind_rows(df1,df2,df3,df4, .id = 'df') |>
+  ggplot(aes(x=x, y=y, color = df)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  facet_wrap(~df)
+
 df1 |>
   ggplot(aes(x=x, y=y)) +
   geom_point()
