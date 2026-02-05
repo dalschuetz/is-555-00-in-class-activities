@@ -219,7 +219,7 @@ long_bob_most_frequent <- long_bob_clean |>
 long_bob_episode_variety <- long_bob_clean |>
   group_by(episode) |>
   summarize(unique_count = n_distinct()) |>
-  arrange(descJ(count_of_instance))
+  arrange(desc(count_of_instance))
 
 long_bob_wide <- long_bob_clean |>
   pivot_wider(

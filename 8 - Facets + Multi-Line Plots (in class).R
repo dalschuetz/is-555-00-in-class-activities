@@ -16,18 +16,100 @@
 
 
 # Facets and multi-lines --------------------------------------------------------------------------------
+library(tidyverse)
+install.packages("ggthemes")
 
 tips <- read_csv('https://www.dropbox.com/s/rydxlxdarjdoj7a/tips.csv?dl=1')
 
 # Let's plot tip_percentage vs. total_bill,
 # then split that across lots of categories
 
+# wrap is only good for small numbers of group, for large numbers of groups, use grids
 
+tips |>
+  ggplot(aes(x = tip, y = total_bill, color = time)) +
+  geom_point(size = 2) +
+  ggthemes::theme_clean() +
+  facet_wrap(size~smoker, ncol = 2)
+
+tips |>
+  ggplot(aes(x = tip, y = total_bill, color = sex)) +
+  geom_point(size = 2) +
+  facet_grid(size~smoker)
+
+tips |>
+  mutate(tip_c = if_else(smoker == "Yes", tip*100, tip)) |>
+  ggplot(aes(x = tip_c, y = total_bill, color = time)) +
+  geom_point(size = 3) +
+  ggthemes::theme_clean() +
+  facet_wrap(~sex, ncol = 2)
+
+tips |>
+  mutate(tip_c = if_else(smoker == "Yes", tip*100, tip)) |>
+  ggplot(aes(x = tip_c, y = total_bill, color = time)) +
+  geom_point(size = 3) +
+  ggthemes::theme_clean() +
+  facet_wrap(~smoker, ncol = 2)
+
+tips |>
+  mutate(tip_c = if_else(smoker == "Yes", tip*100, tip)) |>
+  ggplot(aes(x = tip_c, y = total_bill, color = time)) +
+  geom_point(size = 3) +
+  ggthemes::theme_clean() +
+  facet_wrap(~smoker, scales = 'free_x')
 
 
 econ <- read_csv('https://www.dropbox.com/s/8bq9rw0rk46hru2/econ.csv?dl=1')
 
 # Let's plot two measures over time: savings rate & unemployment weeks
 # It's easiest if we pivot to make this work
+<<<<<<< Updated upstream
 econ %>% 
   select(date, savings_rate, unempl_weeks)
+=======
+  
+  # double line chart
+  
+  econ |> 
+  filter(date > ymd('2011-01-01')) |> 
+  select(date, savings_rate, unempl_weeks) |> 
+  pivot_longer(
+    cols = !date, 
+    names_to = 'measure', 
+    values_to = 'value'
+  ) |> 
+  ggplot(aes(x = date, y = value)) + 
+  geom_line()
+
+
+econ |>
+  filter(date > ymd('2011-01-01')) |> 
+  select(date, savings_rate, unempl_weeks) |> 
+  pivot_longer(
+    cols = !date, 
+    names_to = 'measure', 
+    values_to = 'value'
+  ) |> 
+  ggplot(aes(x = date, y = value, color = measure)) + 
+  geom_line(linewidth = 3)
+
+
+
+# position parameter and jitter
+tips |>
+  # mutate(tip_c = if_else(smoker == "Yes", tip*100, tip)) |>
+  ggplot(aes(x = tip, y = total_bill, color = time)) +
+  geom_jitter(size = 3)
+
+# stacked bar chart
+tips |>
+  mutate(tip_c = if_else(smoker == "Yes", tip*100, tip)) |>
+  ggplot(aes(x = tip_c, fill = time)) +
+  geom_histogram()
+
+# unstacked bar chart
+tips |>
+  mutate(tip_c = if_else(smoker == "Yes", tip*100, tip)) |>
+  ggplot(aes(x = tip_c, fill = time)) +
+  geom_histogram(position = 'dodge') 
+>>>>>>> Stashed changes
