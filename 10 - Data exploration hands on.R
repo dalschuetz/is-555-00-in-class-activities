@@ -30,4 +30,19 @@ lm(y ~ x, data = df2) %>% coefficients()
 lm(y ~ x, data = df3) %>% coefficients()
 lm(y ~ x, data = df4) %>% coefficients()
 
+#visualizations 
+df1 |>
+  ggplot(aes(x=x, y=y)) +
+  geom_point()
 
+df2 |>
+  ggplot(aes(x=x, y=y)) +
+  geom_point()
+
+df3 |>
+  ggplot(aes(x=x, y=y)) +
+  geom_point()
+
+df4 |>
+  ggplot(aes(x=x, y=y)) +
+  geom_point()
